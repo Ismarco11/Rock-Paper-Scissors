@@ -6,12 +6,17 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server = "192.168.1.104"
-        self.port = 5555
+        self.port = 5556
         self.addr = (self.server, self.port)
         self.p = self.connect()
 
+
+
+
     def getP(self):
+        print("ff")
         return self.p
+
 
     def connect(self):
         try:

@@ -13,6 +13,7 @@ height = 700
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
 
+
 class Button:
     def __init__(self, text, x, y, color):
         self.text = text
@@ -25,7 +26,7 @@ class Button:
     def draw(self, win):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
         font = pygame.font.SysFont("comicsans", 40)
-        text = font.render(self.text, 1, (255,255,255))
+        text = font.render(self.text, 1, (255, 255, 255))
         win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
                         self.y + round(self.height / 2) - round(text.get_height() / 2)))
 
@@ -37,13 +38,14 @@ class Button:
         else:
             return False
 
-def redrawWindow(win, game, p):
-    win.fill((128,128,128))
 
-    if not(game.connected()):
+def redrawWindow(win, game, p):
+    win.fill((128, 128, 128))
+
+    if not (game.connected()):
         font = pygame.font.SysFont("comicsans", 80)
-        text = font.render("Waiting for player...", 1, (255,0,0), True)
-        win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
+        text = font.render("Waiting for player...", 1, (255, 0, 0), True)
+        win.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
     else:
         font = pygame.font.SysFont("comicsans", 60)
         text = font.render("Your move", 1, (0, 255, 255))
@@ -55,20 +57,20 @@ def redrawWindow(win, game, p):
         move1 = game.get_player_move(0)
         move2 = game.get_player_move(1)
         if game.bothWent():
-            text1 = font.render(move1, 1, (0,0,0))
-            text2 = font.render(move2, 1, (0,0,0))
+            text1 = font.render(move1, 1, (0, 0, 0))
+            text2 = font.render(move2, 1, (0, 0, 0))
         else:
             if game.p1Went and p == 0:
-                text1 = font.render(move1, 1, (0,0,0))
+                text1 = font.render(move1, 1, (0, 0, 0))
             elif game.p1Went:
-                text1 = font.render("Locked In", 1, (0,0,0))
+                text1 = font.render("Locked In", 1, (0, 0, 0))
             else:
                 text1 = font.render("Waiting...", 1, (0, 0, 0))
 
             if game.p2Went and p == 1:
-                text2 = font.render(move2, 1, (0,0,0))
+                text2 = font.render(move2, 1, (0, 0, 0))
             elif game.p2Went:
-                text2 = font.render("Locked In", 1, (0,0,0))
+                text2 = font.render("Locked In", 1, (0, 0, 0))
             else:
                 text2 = font.render("Waiting...", 1, (0, 0, 0))
 
@@ -84,7 +86,11 @@ def redrawWindow(win, game, p):
 
     pygame.display.update()
 
-btns = [Button("Rock", 50, 500, (0,0,0)), Button("Scissors", 250, 500, (255,0,0)), Button("Paper", 450, 500, (0,255,0))]
+
+btns = [Button("Rock", 50, 500, (0, 0, 0)), Button("Scissors", 250, 500, (255, 0, 0)),
+        Button("Paper", 450, 500, (0, 255, 0))]
+
+
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -102,7 +108,7 @@ def main():
             break
 
         if game.bothWent():
-            redrawWindow(win, game, player)
+            #redrawWindow(win, game, player)
             pygame.time.delay(500)
             try:
                 game = n.send(("reset"))
@@ -119,7 +125,7 @@ def main():
             else:
                 text = font.render("You Lost...!", 1, (255, 0, 0))
 
-            win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
+            win.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.update()
             pygame.time.delay(2000)
 
@@ -141,19 +147,19 @@ def main():
 
         redrawWindow(win, game, player)
 
+
 def menu_screen():
     run = True
     clock = pygame.time.Clock()
-
 
     while run:
         clock.tick(60)
         win.fill((128, 128, 128))
         font = pygame.font.SysFont("comicsans", 60)
-        text = font.render("Click to Play", 1, (255,0,0))
-        win.blit(text, (100,200))
+        text = font.render("Click to Play", 1, (255, 0, 0))
+        win.blit(text, (100, 200))
         pygame.display.update()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -161,6 +167,7 @@ def menu_screen():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 run = False
     main()
+
 
 while True:
     menu_screen()
