@@ -57,6 +57,7 @@ ScreenManager:
         halign: 'center'
 
     MDLabel:
+        id: omove
         text: 'Opponent Move!'
         pos_hint: {"center_x": 0.5, "center_y": .6}
         halign: 'center'
@@ -72,7 +73,9 @@ ScreenManager:
         user_font_size: "60sp"
         size_hint: None, None
         pos_hint: {"center_x": .25, "center_y": .35}
-        on_press: root.LockedIn("Rock")
+        on_press: 
+            root.LockedIn("Rock")
+            text = 'good'
 
     MDIconButton:
         icon: "cut.png"
@@ -117,65 +120,67 @@ class WaitingScreen(Screen):
         self.manager.current = self.manager.next()
 
     def on_enter(self, **kwargs):
-        while True:
-            print(self.manager.next())
-            print('hello')
-            n = Network()
-            player = int(n.getP())
-            print("You are player", player)
-            run = True
-            clock = pygame.time.Clock()
-            while run:
-                clock.tick(60)
-                try:
-                    game = n.send("get")
-                except:
-                    # run = False
-                    print("Couldn't get game")
-                    break
+        print(self.manager.next())
+        print('hello')
+        n = Network()
+        player = int(n.getP())
+        print("You are player", player)
+        run = True
+        clock = pygame.time.Clock()
+        while run:
+            clock.tick(60)
+            try:
+                game = n.send("get")
+            except:
+                # run = False
+                print("Couldn't get game")
+                break
 
-                if game.bothWent():
-                    print("ddtr")
-                    if not (game.connected()):
-                        print("ff")
-                    else:
-                        print("well done")
-                        self.manager.current = 'game'
-                    # redrawWindow(sm, game, player)
-                    pygame.time.delay(500)
-                    try:
-                        game = n.send(("reset"))
-                    except:
-                        run = False
-                        print("Couldn't get game")
-                        break
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        run = False
-                        pygame.quit()
-
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        pos = pygame.mouse.get_pos()
-                        print(pos)
-
+            if game.bothWent():
+                print("ddtr")
                 if not (game.connected()):
                     print("ff")
-                    # self.manager.current = 'wait'
                 else:
                     print("well done")
-                    if player == 1:
-                        self.manager.current = self.manager.next()
-                        break
-                    else:
-                        self.manager.current = self.manager.next()
+                    self.manager.current = 'game'
+                # redrawWindow(sm, game, player)
+                pygame.time.delay(500)
+                try:
+                    game = n.send(("reset"))
+                except:
+                    run = False
+                    print("Couldn't get game")
+                    break
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
 
+                    if GameScreen.ids["mymove"].text in ["Rock", "Paper", "cut"] and game.connected():
+                        if player == 0:
+                            if not game.p1Went:
+                                n.send(GameScreen.ids["mymove"].text)
+                        else:
+                            if not game.p2Went:
+                                n.send(GameScreen.ids["yourmove"].text)
+
+            if not (game.connected()):
+                print("ff")
+                # self.manager.current = 'wait'
+            else:
+                print("well done")
+                if player == 1:
+                    self.manager.current = 'game'
+                else:
+                    self.manager.current = 'game'
 
 
 class GameScreen(Screen):
     def LockedIn(self, text):
         self.ids["mymove"].text = text
-
 
 
 # Create the screen manager

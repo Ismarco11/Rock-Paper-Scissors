@@ -54,7 +54,7 @@ def threaded_inter(conn, p, gameId):
         except:
             break
 
-    print("Lost connention")
+    print("Lost connection")
     try:
         del games[gameId]
         print("Closing game", gameId)
