@@ -116,8 +116,6 @@ class GameScreen(Screen):
         if not (game.connected()):
             print("nooooo")
         else:
-            # print("connected")
-            gm = GameScreen()
             move1 = game.get_player_move(0)
             move2 = game.get_player_move(1)
             if game.bothWent():
@@ -132,9 +130,7 @@ class GameScreen(Screen):
                     self.ids['po'].text = "YOU LOST !!!!!!"
                     return False
 
-            # PROBLEM HERE!!!!!!!!!!
             else:
-                # print(game.p1Went)
 
                 if game.p1Went and p == 0:
                     print(move1)
@@ -149,8 +145,6 @@ class GameScreen(Screen):
                     self.LockedIn("Locked In", sep = 'yourmove')
 
 
-
-        # ScreenManager.current = 'game'
 
     def se(self, player, game, n):
         if player == 0:
