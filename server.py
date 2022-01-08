@@ -14,7 +14,7 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen()
+s.listen(2)
 print("Waiting for a connection, Server Started")
 
 connected = set()
@@ -25,14 +25,13 @@ idCount = 0
 def threaded_inter(conn, p, gameId):
     global idCount
     conn.send(str.encode(str(p)))
-    print(str(p))
+    #print(str(p))
 
     reply = ""
     while True:
-        data = conn.recv(4096).decode()
-        print(data)
-
         try:
+            data = conn.recv(4096).decode()
+
             if gameId in games:
                 game = games[gameId]
                 print(game)
@@ -45,6 +44,7 @@ def threaded_inter(conn, p, gameId):
                         game.resetWent()
                     elif data != "get":
                         game.play(p, data)
+                        print("well done!")
 
                     reply = game
                     conn.sendall(pickle.dumps(reply))
